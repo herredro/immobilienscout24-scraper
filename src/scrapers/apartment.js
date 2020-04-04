@@ -69,12 +69,15 @@ exports.scrap = (page) => {
 
     let apartment = {};
 
-    apartment.id = $('[name="exposeId"]').val();
+    apartment.id = parseInt($('.is24-scoutid__content').text().split("ID: ")[1]);
+
+
     apartment.rentBase = parsePrice($('.is24qa-kaltmiete').text());
     apartment.rentTotal = parsePrice($('.is24qa-gesamtmiete').text());
     apartment.area = parseArea($('.is24qa-wohnflaeche-ca').text().replace(',', '.'));
+    apartment.ppsqm = apartment.rentTotal/apartment.area;
     apartment.rooms = parseInt($('.is24qa-zi').text(), 10);
-    apartment.images = scrapImages($('#slideImageContainer'));
+
 
     const availability = parseAvailableFrom($('.is24qa-bezugsfrei-ab').text());
     apartment = Object.assign(apartment, availability);
